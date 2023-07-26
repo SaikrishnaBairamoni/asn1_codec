@@ -20,10 +20,3 @@ set -e
 ls -la && pwd
 # Build acm.
 mkdir -p /build && cd /build && cmake /__w/asn1_codec/asn1_codec/ && make
-
-# Add test data. This changes frequently so keep it low in the file.
-#mv /__w/asn1_codec/asn1_codec/docker-test /__w/asn1_codec/asn1_codec/docker-test
-# run ACM
-chmod 777 /__w/asn1_codec/asn1_codec/run_acm.sh
-/__w/asn1_codec/asn1_codec/run_acm.sh
-test --output-on-failure

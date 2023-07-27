@@ -25,3 +25,6 @@ cd build
 cmake ..
 cmake --build .
 make
+
+./ppm_tests
+ctest --output-on-failure

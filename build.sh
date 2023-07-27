@@ -18,5 +18,10 @@
 set -e
 
 ls -la && pwd
-# Build acm.
-mkdir -p /build && cd /build && cmake /__w/asn1_codec/asn1_codec/ && make
+
+# build asn1_codec
+mkdir build
+cd build
+cmake ..
+cmake --build .
+make

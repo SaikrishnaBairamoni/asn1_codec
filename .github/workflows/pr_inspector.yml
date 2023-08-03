@@ -59,5 +59,3 @@ jobs:
           else:
               print("PR has an issue reference.")
           EOF
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}

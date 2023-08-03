@@ -30,41 +30,44 @@ jobs:
           BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python - <<EOF
-          from github import Github
           import os
           import requests
 
-          # Your GitHub personal access token
-          BOT_TOKEN = os.environ.get("BOT_TOKEN")
+          # GitHub API base URL and repository information
+          github_api_base = "https://api.github.com"
+          owner = SaikrishnaBairamoni
+          repo = asn1_codec
+          BOT_TOKEN = os.environ.get("BOT_TOKEN")  # Generate one in your GitHub account settings with appropriate permissions
           
-          # The repository owner and name
-          REPO_OWNER = 'SaikrishnaBairamoni'
-          REPO_NAME = 'asn1_codec'
+          headers = {
+              "Authorization": f"token {BOT_TOKEN}",
+              "Accept": "application/vnd.github.v3+json"
+          }
           
-          # Regular expression pattern to match issue references
-          ISSUE_REFERENCE_PATTERN = r'#\d+'
+          def get_open_pull_requests():
+              url = f"{github_api_base}/repos/{owner}/{repo}/pulls"
+              response = requests.get(url, headers=headers)
+              return response.json()
           
-          def comment_on_missing_issue_references(pr, repo):
-              # Check if the PR body contains any issue references
-              if not any(re.findall(ISSUE_REFERENCE_PATTERN, pr.body)):
-                  message = "This pull request does not reference any issues. Please add references to related issues."
-                  pr.create_issue_comment(message)
+          def has_issue_reference(body):
+              # You can adjust this function to check for different issue reference patterns
+              return any(word.startswith("#") for word in body.split())
           
-          def main():
-              # Initialize the GitHub API client
-              g = Github(BOT_TOKEN)
-          
-              # Get the repository
-              repo = g.get_repo(f'{REPO_OWNER}/{REPO_NAME}')
-          
-              # Get a list of open pull requests for the repository
-              open_prs = repo.get_pulls(state='open')
-          
-              # Loop through the open PRs
-              for pr in open_prs:
-                  comment_on_missing_issue_references(pr, repo)
+          def comment_on_missing_references(pr_number):
+              url = f"{github_api_base}/repos/{owner}/{repo}/issues/{pr_number}/comments"
+              message = "It seems that this pull request lacks a reference to an issue. Please add a reference to an existing issue using 'Fixes #issue_number' or 'Closes #issue_number' in your PR description."
+              payload = {"body": message}
+              response = requests.post(url, headers=headers, json=payload)
+              return response
           
           if __name__ == "__main__":
-              main()
-          
+              prs = get_open_pull_requests()
+              for pr in prs:
+                  pr_number = pr["number"]
+                  pr_body = pr["body"]
+                  if not has_issue_reference(pr_body):
+                      comment_on_missing_references(pr_number)
+
+
+              
           EOF

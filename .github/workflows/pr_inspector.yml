@@ -1,0 +1,63 @@
+name: PR Inspector
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  inspect_pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if PR has issue reference
+        id: check_issue_reference
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+      - name: Install dependencies
+        run: pip install requests
+      - name: Run PR Inspector
+        env:
+          BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<EOF
+          import os
+          import requests
+
+          GITHUB_API_URL = "https://api.github.com"
+          pr_number = os.environ.get("PR_NUMBER")
+          repo_full_name = os.environ.get("GITHUB_REPOSITORY")
+          has_issue_reference = False
+
+          url = f"{GITHUB_API_URL}/repos/{repo_full_name}/pulls/{pr_number}/commits"
+          headers = {"Authorization": f"token {os.environ.get('GITHUB_TOKEN')}"}
+          response = requests.get(url, headers=headers)
+          commits = response.json()
+
+          for commit in commits:
+              if "message" in commit["commit"] and "issue #" in commit["commit"]["message"].lower():
+                  has_issue_reference = True
+                  break
+
+          if not has_issue_reference:
+              url = f"{GITHUB_API_URL}/repos/{repo_full_name}/issues/{pr_number}/comments"
+              data = {
+                  "body": "This pull request does not reference a GitHub issue. Please link to an issue in the PR description."
+              }
+              response = requests.post(url, headers=headers, json=data)
+              if response.status_code == 201:
+                  print("Comment added successfully!")
+              else:
+                  print(f"Failed to add comment. Status code: {response.status_code}")
+          else:
+              print("PR has an issue reference.")
+          EOF
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}

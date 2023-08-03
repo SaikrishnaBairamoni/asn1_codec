@@ -22,13 +22,17 @@ jobs:
         with:
           python-version: 3.x
       - name: Install dependencies
-        run: pip install requests
+        run: |
+          pip install requests
+          pip3 install PyGithub
       - name: Run PR Inspector
         env:
           BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python - <<EOF
           from github import Github
+          import os
+          import requests
 
           # Your GitHub personal access token
           BOT_TOKEN = os.environ.get("BOT_TOKEN")

@@ -35,8 +35,8 @@ jobs:
 
           # GitHub API base URL and repository information
           github_api_base = "https://api.github.com"
-          owner = SaikrishnaBairamoni
-          repo = asn1_codec
+          owner = "SaikrishnaBairamoni"
+          repo = "asn1_codec"
           BOT_TOKEN = os.environ.get("BOT_TOKEN")  # Generate one in your GitHub account settings with appropriate permissions
           
           headers = {

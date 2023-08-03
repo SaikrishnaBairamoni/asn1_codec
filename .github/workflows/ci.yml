@@ -52,7 +52,6 @@ jobs:
        working-directory: ${{env.working-directory}}   
      - name: Install pugixml
        run: |
-         ls -la && pwd
          git clone https://github.com/vlm/asn1c.git
          git clone https://github.com/zeux/pugixml.git
          ls -la && pwd

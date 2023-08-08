@@ -11,7 +11,7 @@ def check_issue_reference(repo_full_name, pr_number):
     commits = response.json()
 
     for commit in commits:
-        if "message" in commit["commit"] and "issue #" in commit["commit"]["message"].lower():
+        if "message" in commit and "issue #" in commit["message"].lower():
             return True
 
     return False

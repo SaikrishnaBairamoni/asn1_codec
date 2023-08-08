@@ -24,6 +24,6 @@ jobs:
 
     - name: Run inspection script
       env:
-        BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
         PR_NUMBER: ${{ github.event.number }}
       run: python inspect_pr.py

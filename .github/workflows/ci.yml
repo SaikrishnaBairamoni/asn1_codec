@@ -89,7 +89,11 @@ jobs:
          cd coverage 
          gcov $GITHUB_WORKSPACE/kafka-test/src/*.cpp --object-directory /__w/asn1-codec/asn1-codec/build/kafka-test/CMakeFiles/Kafka-TestLib.dir/src/
          gcov $GITHUB_WORKSPACE/src/*.cpp --object-directory /__w/asn1-codec/asn1-codec/build/CMakeFiles/ppm_tests.dir/src/ 
-       working-directory: ${{env.working-directory}}            
+       working-directory: ${{env.working-directory}}      
+     - name: Find jacoco.xml
+       shell: bash
+       run: |
+         find "$GITHUB_WORKSPACE" -name ".java"             
      - name: Archive code coverage results
        uses: actions/upload-artifact@v3
        with:

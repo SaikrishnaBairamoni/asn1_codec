@@ -90,7 +90,10 @@ jobs:
          cd coverage 
          gcov $GITHUB_WORKSPACE/kafka-test/src/*.cpp --object-directory /__w/asn1-codec/asn1-codec/build/kafka-test/CMakeFiles/Kafka-TestLib.dir/src/
          gcov $GITHUB_WORKSPACE/src/*.cpp --object-directory /__w/asn1-codec/asn1-codec/build/CMakeFiles/ppm_tests.dir/src/ 
-         ls -la && pwd      
+         apt-get update && apt-get install -y locales
+         locale-gen "en_US.UTF-8"
+         update-locale LC_ALL="en_US.UTF-8"
+         export LANG="en_US.UTF-8"
        working-directory: ${{env.working-directory}}            
      - name: Archive code coverage results
        uses: actions/upload-artifact@v3

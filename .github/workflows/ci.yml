@@ -119,10 +119,8 @@ jobs:
          sonar.sonar.projectBaseDir=/home/runner/work/asn1-codec/asn1-codec/
          sonar.exclusions=**/*.java
          sonar.coverage.exclusions=**/*.java
-         # Exclude the pugixml/tests/data/ directory
          sonar.exclusions=pugixml/tests/data/**
-         Provide path to compiled Java classes
-         sonar.java.binaries=**/target/classes 
+         sonar.java.binaries=
          # Set Git as SCM sensor
          sonar.scm.disabled=true
          #sonar.scm.enabled=false

@@ -127,7 +127,7 @@ jobs:
          sonar.scm.provider=git
          sonar.sourceEncoding=UTF-8
          EOF
-     - name:   SonarScanner
+     - name:  SonarScanner
        uses: usdot-fhwa-stol/actions/sonar-scanner@main
        with:
          sonar-properties-path: /tmp/sonar-scanner.properties

@@ -121,6 +121,8 @@ jobs:
          sonar.coverage.exclusions=**/*.java
          # Exclude the pugixml/tests/data/ directory
          sonar.exclusions=pugixml/tests/data/**
+         Provide path to compiled Java classes
+         sonar.java.binaries=**/target/classes 
          # Set Git as SCM sensor
          sonar.scm.disabled=true
          #sonar.scm.enabled=false

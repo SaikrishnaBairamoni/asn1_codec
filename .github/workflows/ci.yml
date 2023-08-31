@@ -125,10 +125,12 @@ jobs:
          sonar.exclusions=**/*.java
          sonar.coverage.exclusions=**/*.java
          # Set Git as SCM sensor
-         sonar.scm.disabled=true
-         #sonar.scm.enabled=false
+         sonar.scm.disabled=false
+         sonar.scm.enabled=true
          sonar.scm.provider=git
          sonar.sourceEncoding=UTF-8
+         sonar.c.file.suffixes=-
+         sonar.cpp.file.suffixes=.cpp,.h,.tpp
          EOF
      - name:  SonarScanner
        uses: usdot-fhwa-stol/actions/sonar-scanner@main

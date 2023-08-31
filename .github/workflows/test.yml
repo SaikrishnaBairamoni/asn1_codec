@@ -1,4 +1,4 @@
-name: asn1-codec
+name: asn1codec
 on: 
  push:
 

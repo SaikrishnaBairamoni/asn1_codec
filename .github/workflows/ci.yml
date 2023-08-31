@@ -20,8 +20,7 @@ jobs:
          apt-get -y install sudo wget curl gnupg lsb-release gcovr unzip gcc-multilib libasan*
          sudo apt-get -y install software-properties-common
          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-         sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
-         #curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose        
+         sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"     
          sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
          chmod +x /usr/local/bin/docker-compose
          sudo apt-get -y update
@@ -90,10 +89,6 @@ jobs:
          cd coverage 
          gcov $GITHUB_WORKSPACE/kafka-test/src/*.cpp --object-directory /__w/asn1-codec/asn1-codec/build/kafka-test/CMakeFiles/Kafka-TestLib.dir/src/
          gcov $GITHUB_WORKSPACE/src/*.cpp --object-directory /__w/asn1-codec/asn1-codec/build/CMakeFiles/ppm_tests.dir/src/ 
-         apt-get update && apt-get install -y locales
-         locale-gen "en_US.UTF-8"
-         update-locale LC_ALL="en_US.UTF-8"
-         export LANG="en_US.UTF-8"
        working-directory: ${{env.working-directory}}            
      - name: Archive code coverage results
        uses: actions/upload-artifact@v3
@@ -125,12 +120,10 @@ jobs:
          sonar.exclusions=**/*.java
          sonar.coverage.exclusions=**/*.java
          # Set Git as SCM sensor
-         sonar.scm.disabled=false
-         sonar.scm.enabled=true
+         sonar.scm.disabled=true
+         #sonar.scm.enabled=false
          sonar.scm.provider=git
          sonar.sourceEncoding=UTF-8
-         sonar.c.file.suffixes=-
-         sonar.cpp.file.suffixes=.cpp,.h,.tpp
          EOF
      - name:  SonarScanner
        uses: usdot-fhwa-stol/actions/sonar-scanner@main

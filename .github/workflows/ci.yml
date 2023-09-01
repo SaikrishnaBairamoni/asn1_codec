@@ -89,11 +89,7 @@ jobs:
          cd coverage 
          gcov $GITHUB_WORKSPACE/kafka-test/src/*.cpp --object-directory /__w/asn1-codec/asn1-codec/build/kafka-test/CMakeFiles/Kafka-TestLib.dir/src/
          gcov $GITHUB_WORKSPACE/src/*.cpp --object-directory /__w/asn1-codec/asn1-codec/build/CMakeFiles/ppm_tests.dir/src/ 
-       working-directory: ${{env.working-directory}}      
-     - name: Find jacoco.xml
-       shell: bash
-       run: |
-         find "$GITHUB_WORKSPACE" -name ".java"             
+       working-directory: ${{env.working-directory}}                 
      - name: Archive code coverage results
        uses: actions/upload-artifact@v3
        with:
@@ -116,15 +112,15 @@ jobs:
          sonar.projectVersion=1.0
          sonar.projectKey=usdot-jpo-ode-1_asn1-codec
          sonar.organization=usdot-jpo-ode-1
-         sonar.sources=.
-         sonar.exclusions=src/ppm.cpp
+         sonar.sources=src,cv-lib/src
          sonar.cfamily.build-wrapper-output=bw-output
          sonar.cfamily.gcov.reportsPath=/__w/asn1-codec/asn1-codec/coverage/
          sonar.sonar.projectBaseDir=/home/runner/work/asn1-codec/asn1-codec/
          sonar.exclusions=**/*.java
          sonar.coverage.exclusions=**/*.java
+         #sonar.inclusions=**/*.*
          sonar.exclusions=pugixml/tests/data/**
-         sonar.java.binaries=
+         #sonar.java.binaries=
          # Set Git as SCM sensor
          sonar.scm.disabled=true
          #sonar.scm.enabled=false
